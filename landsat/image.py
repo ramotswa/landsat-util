@@ -260,7 +260,7 @@ class BaseProcess(VerbosityMixin):
             # Color Correction
             band = self._color_correction(band, self.bands[i], 0, coverage)
 
-            output.write_band(i+1, img_as_ubyte(band))
+            output.write_band(i + 1, img_as_ubyte(band))
 
             new_bands[i] = None
         self.output("Writing to file", normal=True, color='green', indent=1)
@@ -492,7 +492,7 @@ class PanSharpen(BaseProcess):
             band = numpy.multiply(band, pan)
             band = self._color_correction(band, self.bands[i], 0, coverage)
 
-            output.write_band(i+1, img_as_ubyte(band))
+            output.write_band(i + 1, img_as_ubyte(band))
 
             new_bands[i] = None
 
