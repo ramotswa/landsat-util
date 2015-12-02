@@ -142,7 +142,7 @@ class BaseProcess(VerbosityMixin):
 
         try:
             for i, band in enumerate(self.bands):
-                bands.append(rasterio.open(self.bands_path[i]).read_band(1))
+                bands.append(rasterio.open(self.bands_path[i]).read(1))
         except IOError as e:
             exit(e.message, 1)
 
@@ -283,7 +283,7 @@ class BaseProcess(VerbosityMixin):
     def _calculate_cloud_ice_perc(self):
         self.output('Calculating cloud and snow coverage from QA band', normal=True, arrow=True)
 
-        a = rasterio.open(join(self.scene_path, self._get_full_filename('QA'))).read_band(1)
+        a = rasterio.open(join(self.scene_path, self._get_full_filename('QA'))).read(1)
 
         count = 0
         snow = [56320, 39936, 31744, 28590, 26656, 23552]
