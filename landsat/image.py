@@ -152,7 +152,7 @@ class BaseProcess(VerbosityMixin):
         self.output("Projecting", normal=True, arrow=True)
         for i, band in enumerate(bands):
             self.output("band %s" % self.bands[i], normal=True, color='green', indent=1)
-            reproject(band, new_bands[i], src_transform=proj_data['transform'], src_crs=proj_data['crs'],
+            reproject(band, new_bands[i], src_transform=proj_data['affine'], src_crs=proj_data['crs'],
                       dst_transform=proj_data['dst_transform'], dst_crs=self.dst_crs, resampling=RESAMPLING.nearest,
                       num_threads=2)
 
@@ -224,7 +224,6 @@ class BaseProcess(VerbosityMixin):
 
         # Only collect src data that is needed and delete the rest
         image_data = {
-            'transform': src.transform,
             'crs': src.crs,
             'affine': src.affine,
             'shape': src.shape,
