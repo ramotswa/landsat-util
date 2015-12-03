@@ -505,7 +505,9 @@ class PanSharpen(BaseProcess):
 
         m = numpy.add(bands[0], bands[1])
         m = numpy.add(m, bands[2])
-        pan = numpy.multiply(numpy.nan_to_num(numpy.true_divide(1, m)), bands[self.band8])
+        temp = numpy.true_divide(1, m)
+        temp[temp == numpy.inf] = 0
+        pan = numpy.multiply(temp, bands[self.band8])
 
         return pan
 
