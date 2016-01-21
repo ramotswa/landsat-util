@@ -94,7 +94,7 @@ class BaseProcess(VerbosityMixin):
 
         self.bands_path = []
         for band in self.bands:
-            self.bands_path.append(join(self.scene_path, self._get_full_filename(band)))
+            self.bands_path.append(join(self.scene_path, self._get_full_filename("0"+str(band))))
 
     def _get_boundaries(self, src, shape):
 
@@ -247,7 +247,7 @@ class BaseProcess(VerbosityMixin):
 
         # Read coverage from QBA
         coverage = self._calculate_cloud_ice_perc()
-
+        #coverage = 5
         self.output("Final Steps", normal=True, arrow=True)
 
         suffix = 'bands_%s' % "".join(map(str, self.bands))
@@ -283,7 +283,7 @@ class BaseProcess(VerbosityMixin):
     def _calculate_cloud_ice_perc(self):
         self.output('Calculating cloud and snow coverage from QA band', normal=True, arrow=True)
 
-        a = rasterio.open(join(self.scene_path, self._get_full_filename('QA'))).read_band(1)
+        a = rasterio.open(join(self.scene_path, self._get_full_filename('10'))).read_band(1)
 
         count = 0
         snow = [56320, 39936, 31744, 28590, 26656, 23552]
@@ -396,17 +396,19 @@ class Simple(BaseProcess):
         self.output('Image processing started for bands %s' % '-'.join(map(str, self.bands)), normal=True, arrow=True)
 
         bands = self._read_bands()
+
         image_data = self._get_image_data()
 
         new_bands = self._generate_new_bands(image_data['shape'])
 
-        self._warp(image_data, bands, new_bands)
+        #self._warp(image_data, bands, new_bands)
 
         # Bands are no longer needed
         del bands
-
+        self.output('Rastario Options: ', normal=True, arrow=True)
         rasterio_options = {
             'driver': 'GTiff',
+            #'driver': 'jp2',
             'width': image_data['shape'][1],
             'height': image_data['shape'][0],
             'count': 3,
