@@ -5,6 +5,7 @@
 import os
 import tarfile
 import glob
+from osgeo import ogr
 from copy import copy
 import subprocess
 from shutil import copyfile
@@ -282,6 +283,10 @@ class BaseProcess(VerbosityMixin):
 
     def _calculate_cloud_ice_perc(self):
         self.output('Calculating cloud and snow coverage from QA band', normal=True, arrow=True)
+
+        wkt = "POLYGON ((1162440.5712740074 672081.4332727483, 1162440.5712740074 647105.5431482664, 1195279.2416228633 647105.5431482664, 1195279.2416228633 672081.4332727483, 1162440.5712740074 672081.4332727483))"
+        poly = ogr.CreateGeometryFromWkt(wkt)
+        self.output("Area = %d" % poly.GetArea(), indent=1, normal=True, color='green')
 
         a = rasterio.open(join(self.scene_path, self._get_full_filename('10'))).read_band(1)
 
